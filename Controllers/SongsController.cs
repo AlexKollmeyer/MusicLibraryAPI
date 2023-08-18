@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Music_LibraryBackend.Data;
+using Music_LibraryBackend.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,9 +18,10 @@ namespace Music_LibraryBackend.Controllers
         }
         // GET: api/<SongsController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            var movies = _context.Songs.ToList();
+            return Ok(movies);
         }
 
         // GET api/<SongsController>/5
@@ -31,8 +33,11 @@ namespace Music_LibraryBackend.Controllers
 
         // POST api/<SongsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Song song)
         {
+            _context.Songs.Add(song);
+            _context.SaveChanges();
+            return StatusCode(201,song);
         }
 
         // PUT api/<SongsController>/5
