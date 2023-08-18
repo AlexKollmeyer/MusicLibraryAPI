@@ -45,8 +45,20 @@ namespace Music_LibraryBackend.Controllers
 
         // PUT api/<SongsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] Song song)
         {
+            var songToUpdate = _context.Songs.FirstOrDefault(m => m.Id == id);
+            if (song == null)
+                return NotFound();
+            songToUpdate.Title = song.Title;
+            songToUpdate.Artist = song.Artist;
+            songToUpdate.Album = song.Album;
+            songToUpdate.Genre = song.Genre;
+            songToUpdate.ReleaseDate = song.ReleaseDate;
+            _context.SaveChanges();
+            return Ok(song);
+
+
         }
 
         // DELETE api/<SongsController>/5
