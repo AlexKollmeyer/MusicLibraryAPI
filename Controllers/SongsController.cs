@@ -63,8 +63,15 @@ namespace Music_LibraryBackend.Controllers
 
         // DELETE api/<SongsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            var songToRemove = _context.Songs.FirstOrDefault(m => m.Id == id);
+            if (songToRemove == null)
+                return NotFound();
+            _context.Songs.Remove(songToRemove);
+            _context.SaveChanges();
+            return NoContent();
+
         }
     }
 }
