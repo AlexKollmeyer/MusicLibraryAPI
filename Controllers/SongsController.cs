@@ -61,7 +61,7 @@ namespace Music_LibraryBackend.Controllers
 
 
         }
-        [HttpPatch("{id}")]
+        [HttpPatch("{id}/Like")]
         public IActionResult Like(int id)
         {
             var songToUpdate = _context.Songs.FirstOrDefault(m => m.Id == id);
