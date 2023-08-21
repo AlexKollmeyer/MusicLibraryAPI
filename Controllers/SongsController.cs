@@ -20,8 +20,8 @@ namespace Music_LibraryBackend.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var movies = _context.Songs.ToList();
-            return Ok(movies);
+            var songs = _context.Songs.ToList();
+            return Ok(songs);
         }
 
         // GET api/<SongsController>/5
@@ -40,24 +40,36 @@ namespace Music_LibraryBackend.Controllers
         {
             _context.Songs.Add(song);
             _context.SaveChanges();
-            return StatusCode(201,song);
+            return StatusCode(201, song);
         }
 
         // PUT api/<SongsController>/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Song song)
         {
-            var songToUpdate = _context.Songs.FirstOrDefault(m => m.Id == id);
-            if (song == null)
+            var songToUpdate = _context.Songs.Find(id);
+            if (songToUpdate == null)
                 return NotFound();
             songToUpdate.Title = song.Title;
             songToUpdate.Artist = song.Artist;
             songToUpdate.Album = song.Album;
             songToUpdate.Genre = song.Genre;
             songToUpdate.ReleaseDate = song.ReleaseDate;
+            songToUpdate.Likes = song.Likes;
             _context.SaveChanges();
             return Ok(song);
 
+
+        }
+        [HttpPatch("{id}")]
+        public IActionResult Like(int id)
+        {
+            var songToUpdate = _context.Songs.FirstOrDefault(m => m.Id == id);
+            if (songToUpdate == null)
+                return NotFound();
+            songToUpdate.Likes += 1;
+            _context.SaveChanges();
+            return Ok(songToUpdate);
 
         }
 
@@ -73,5 +85,6 @@ namespace Music_LibraryBackend.Controllers
             return NoContent();
 
         }
+        
     }
 }
