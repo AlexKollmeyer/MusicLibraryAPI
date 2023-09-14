@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Music_LibraryBackend.Data;
+using Music_LibraryBackend.Extensions;
 
 namespace Music_LibraryBackend
 {
@@ -11,7 +12,7 @@ namespace Music_LibraryBackend
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.ConfigureCors();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -29,6 +30,7 @@ namespace Music_LibraryBackend
 
             var app = builder.Build();
 
+            app.UseCors("CirsPolicy");
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
